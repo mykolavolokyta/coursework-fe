@@ -1,9 +1,28 @@
 import './App.css';
 import {useAuth0} from "@auth0/auth0-react";
-import {authLogin, useAuthLogin} from "./api/authApi";
+import {useAuthLogin} from "./api/authApi";
+import {Route, Routes} from 'react-router-dom';
+import {Layout} from "antd";
+import Sidebar from "./components/Sidebar/Sidebar";
+import {isAdmin, isWorker} from "./utils/isAdmin";
+import {useEffect} from "react";
+import {sec} from "./security";
+import ProductsPage from "./components/pages/ProductsPage/ProductsPage";
+import ReceivementsPage from "./components/pages/ReceivementsPage/ReceivementsPage";
+import ProfilePage from "./components/pages/ProfilePage/ProfilePage";
+import UsersPage from "./components/pages/UsersPage/UsersPage";
+import CreateShipmentPage from "./components/pages/CreateShipmentPage/CreateShipmentPage";
+import ShipmentsPage from "./components/pages/ShipmentsPage/ShipmentsPage";
+import CreateReceivementPage from "./components/pages/CreateReceivementPage/CreateReceivementPage";
+import AnalyticsPage from "./components/pages/AnalyticsPage/AnalyticsPage";
+import UploadReceivementPage from "./components/pages/UploadReceivementPage/UploadReceivementPage";
+import ShipmentDetailsPage from "./components/pages/ShipmentDetailsPage/ShipmentDetailsPage";
+
+const {Content} = Layout;
 
 function App() {
     const {
+        getAccessTokenSilently,
         getIdTokenClaims,
         isAuthenticated,
         error,
@@ -13,7 +32,15 @@ function App() {
         logout,
     } = useAuth0();
 
-    const { authLogin } = useAuthLogin();
+    useEffect(() => {
+        sec.setAccessTokenSilently(getAccessTokenSilently);
+    }, [getAccessTokenSilently]);
+    sec.setIdTokenSilently(async () => {
+        const idTokenClaims = await getIdTokenClaims();
+        return idTokenClaims?.__raw;
+    });
+
+    const {authLogin} = useAuthLogin();
 
     if (error) {
         return <div>{error.message}</div>
@@ -26,14 +53,42 @@ function App() {
         loginWithRedirect();
     }
 
-    const rolesKey = `${process.env.REACT_APP_JWT_CUSTOM_NAMESPACE}/roles`;
-    const roles = user && user[rolesKey];
-
     authLogin();
+
+    if (!isAdmin(user) && !isWorker(user)) {
+        return <div>Bebra</div>
+    }
 
     return (
         <div className="App">
-            {roles ? roles.join(' ') : 'nn'}
+            <Layout style={{minHeight: '100vh'}}>
+                <Sidebar isAdmin={isAdmin(user)} handleLogout={logout}/>
+                <Layout>
+                    <Content style={{padding: '20px'}}>
+                        <Routes>
+                            {
+                                (isAdmin(user) || isWorker(user)) && <>
+                                    <Route path="/" element={<ProductsPage/>}/>
+                                    <Route path="/receivement/create" element={<CreateReceivementPage/>}/>
+                                    <Route path="/receivement/upload" element={<UploadReceivementPage/>}/>
+                                    <Route path="/receivement" element={<ReceivementsPage/>}/>
+                                    <Route path="/shipment/create" element={<CreateShipmentPage/>}/>
+                                    <Route path="/shipment" element={<ShipmentsPage/>}/>
+                                    <Route path="/shipment/:id" element={<ShipmentDetailsPage />} />
+                                    <Route path="/profile" element={<ProfilePage/>}/>
+                                </>
+                            }
+                            {
+                                isAdmin(user) && <>
+                                    <Route path="/analytics" element={<AnalyticsPage/>}/>
+                                    <Route path="/employees" element={<UsersPage/>}/>
+                                </>
+                            }
+                            <Route path="*" element={<div>AAAA</div>}/>
+                        </Routes>
+                    </Content>
+                </Layout>
+            </Layout>
         </div>
     );
 }
