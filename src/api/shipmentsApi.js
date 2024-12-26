@@ -28,9 +28,17 @@ export const shipmentsApi = createApi({
                 method: 'POST',
                 body: shipment,
             }),
+            invalidatesTags: ['Shipments', "Products"],
+        }),
+        updateShipmentStatus: builder.mutation({
+            query: ({ id, status }) => ({
+                url: `/${id}/status`,
+                method: "PUT",
+                body: { status },
+            }),
             invalidatesTags: ['Shipments'],
         }),
     }),
 });
 
-export const { useGetShipmentsQuery, useGetShipmentByIdQuery, useCreateShipmentMutation  } = shipmentsApi;
+export const { useGetShipmentsQuery, useGetShipmentByIdQuery, useCreateShipmentMutation, useUpdateShipmentStatusMutation  } = shipmentsApi;

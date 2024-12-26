@@ -1,6 +1,7 @@
 import React from 'react';
 import {useGetProfileQuery, useEditProfileMutation} from '../../../api/profileApi';
 import {Form, Input, Button, message} from 'antd';
+import LoadingScreen from "../../LoadingScreen/LoadingScreen";
 
 const ProfilePage = () => {
     const {data: profile, isLoading, error} = useGetProfileQuery();
@@ -23,7 +24,7 @@ const ProfilePage = () => {
     };
 
     if (isLoading) {
-        return <div>Loading...</div>;
+        return <LoadingScreen/>;
     }
 
     return (

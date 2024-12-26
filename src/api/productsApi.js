@@ -18,7 +18,11 @@ export const productsApi = createApi({
     }),
     endpoints: (builder) => ({
         getProducts: builder.query( {
-            query: () => '/all',
+            query: (search = '') => ({
+                url: '/all',
+                params: { search },
+            }),
+            providesTags: ['Products'],
         }),
         createProduct: builder.mutation({
             query: (newProduct) => ({

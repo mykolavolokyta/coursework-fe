@@ -25,7 +25,7 @@ export const receivementsApi = createApi({
                 method: 'POST',
                 body: receivement,
             }),
-            invalidatesTags: ['Receivements'],
+            invalidatesTags: ['Receivements', "Products"],
         }),
         uploadCSV: builder.mutation({
             query: (file) => ({
@@ -37,6 +37,7 @@ export const receivementsApi = createApi({
                     return headers
                 },
             }),
+            invalidatesTags: ['Receivements', "Products"],
         }),
     }),
 });

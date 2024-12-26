@@ -1,12 +1,13 @@
 import React from 'react';
 import {useGetAnalyticsQuery} from "../../../api/analyticsApi";
 import { Card, Col, Row, Table } from 'antd';
+import LoadingScreen from "../../LoadingScreen/LoadingScreen";
 
 const AnalyticsPage = () => {
     const { data: analytics, isLoading, error } = useGetAnalyticsQuery();
 
     if (isLoading) {
-        return <div>Loading...</div>;
+        return <LoadingScreen/>;
     }
 
     if (error) {

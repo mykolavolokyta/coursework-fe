@@ -18,11 +18,11 @@ const UploadReceivementPage = () => {
 
         try {
             await uploadCSV(formData).unwrap();
-            message.success('File uploaded successfully');
+            message.success('Файл успішно завантажено');
             setFile(null);
         } catch (error) {
             console.error(error);
-            message.error('Failed to upload file');
+            message.error('Не вдалося завантажити файл');
         }
     };
 
@@ -36,9 +36,9 @@ const UploadReceivementPage = () => {
 
     return (
         <div style={{ padding: '20px' }}>
-            <h2>Upload CSV for Receiving</h2>
-            <Upload {...props} accept=".csv">
-                <Button icon={<UploadOutlined />}>Select File</Button>
+            <h2>Завантажте файл з інформацію про прийняття товарів</h2>
+            <Upload {...props} accept=".csv" maxCount={1}>
+                <Button icon={<UploadOutlined />}>Обрати файл</Button>
             </Upload>
             <Button
                 type="primary"
@@ -47,7 +47,7 @@ const UploadReceivementPage = () => {
                 loading={isLoading}
                 style={{ marginTop: '10px' }}
             >
-                Upload
+                Завантажити
             </Button>
         </div>
     );

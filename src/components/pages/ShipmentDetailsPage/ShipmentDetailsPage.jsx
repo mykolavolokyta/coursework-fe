@@ -33,11 +33,21 @@ const ShipmentDetailsPage = () => {
         return <div>Сталася помилка при отриманні даних.</div>;
     }
 
+    const mapStatus = (status) => {
+        if (status === 'Pending') {
+            return 'В очікуванні';
+        }
+        if (status === 'Delivered') {
+            return 'Доставлено';
+        }
+        return 'Втрачено';
+    }
+
     const shipmentDetails = [
         { label: 'ID', value: shipment.id },
         { label: 'Отримувач', value: shipment.recipient },
         { label: 'Відповідальний', value: shipment.responsibleUser?.username || 'Невідомо' },
-        { label: 'Статус', value: shipment.status },
+        { label: 'Статус', value: mapStatus(shipment.status) },
         { label: 'Час створення', value: new Date(shipment.createdAt).toLocaleString() },
         { label: 'Час оновлення', value: new Date(shipment.updatedAt).toLocaleString() },
     ];

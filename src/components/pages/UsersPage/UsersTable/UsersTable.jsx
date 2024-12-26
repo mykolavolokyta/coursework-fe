@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {Table, Button, Modal, Form, Input, message, Select} from 'antd';
 import {useEditUserMutation, useGetUsersQuery} from "../../../../api/usersApi";
+import LoadingScreen from "../../../LoadingScreen/LoadingScreen";
 
 const UsersTable = () => {
     const {data: users, isLoading, error, refetch} = useGetUsersQuery();
@@ -35,7 +36,7 @@ const UsersTable = () => {
     };
 
     if (isLoading) {
-        return <div>Loading...</div>;
+        return <LoadingScreen/>;
     }
 
     if (error) {

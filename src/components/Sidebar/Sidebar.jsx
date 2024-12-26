@@ -16,7 +16,7 @@ const Sidebar = ({isAdmin, handleLogout}) => {
     return (
         <Sider width={240} className="site-layout-background">
             <div className="logo" style={{padding: '16px', fontSize: '20px', color: 'white', fontWeight: 'bold'}}>
-                Warehouse Panel
+                Склад
             </div>
             <Menu
                 mode="inline"

@@ -14,7 +14,7 @@ const ShipmentPage = () => {
     }
 
     if (error) {
-        return <div>Error loading products...</div>;
+        return <div>Помилка при завантаженні продуктів...</div>;
     }
 
     const handleQuantityChange = (productId, quantity) => {

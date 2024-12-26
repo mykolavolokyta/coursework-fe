@@ -17,6 +17,8 @@ import CreateReceivementPage from "./components/pages/CreateReceivementPage/Crea
 import AnalyticsPage from "./components/pages/AnalyticsPage/AnalyticsPage";
 import UploadReceivementPage from "./components/pages/UploadReceivementPage/UploadReceivementPage";
 import ShipmentDetailsPage from "./components/pages/ShipmentDetailsPage/ShipmentDetailsPage";
+import UnauthorizedUserMessage from "./components/UnauthorizedUserMessage/UnauthorizedUserMessage";
+import LoadingScreen from "./components/LoadingScreen/LoadingScreen";
 
 const {Content} = Layout;
 
@@ -46,7 +48,7 @@ function App() {
         return <div>{error.message}</div>
     }
     if (isLoading) {
-        return <div>Loading...</div>;
+        return <LoadingScreen/>;
     }
 
     if (!isAuthenticated) {
@@ -56,7 +58,7 @@ function App() {
     authLogin();
 
     if (!isAdmin(user) && !isWorker(user)) {
-        return <div>Bebra</div>
+        return <UnauthorizedUserMessage/>;
     }
 
     return (
